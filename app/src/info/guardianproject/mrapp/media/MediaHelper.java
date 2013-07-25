@@ -179,7 +179,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
 				{
 					uriLaunch = (Uri) mActivity.getIntent().getExtras().get(Intent.EXTRA_STREAM);
 					
-				}
+				} 
 				
 			}
 		 }

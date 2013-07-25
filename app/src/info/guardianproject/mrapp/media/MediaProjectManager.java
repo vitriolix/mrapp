@@ -27,6 +27,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -151,6 +152,34 @@ public class MediaProjectManager implements MediaManager {
     			mScene.setMedia(mClipIndex, "FIXME", result.path, result.mimeType);
     			mScene.save();
     			((SceneEditorActivity)mActivity).refreshClipPager();
+    		}
+			catch (IOException ioe)
+			{
+				Log.e(AppConstants.TAG,"error adding media result",ioe);
+			}
+        }
+        
+    }
+    
+    public void handleRedactedResponse (Intent intent) throws IOException
+    {           
+    	MediaDesc result = null;
+    	
+    	int idx = ((SceneEditorActivity) mActivity).getOrderClipsFragment().getCurrentClipIdx();
+        if (intent.hasExtra("redacted-image-uri")) {
+        	Uri uri = intent.getParcelableExtra("redacted-image-uri");
+        	Log.d("!!!! returned uri", uri.toString());
+        	result = mMediaHelper.pullMediaDescFromUri(uri);
+		}
+        
+    	if (result != null && result.path != null && result.mimeType != null)
+    	{
+    		try
+    		{
+    			updateMediaFile(idx, result.path, result.mimeType);
+    			// FIXME use media type as definied in json
+    			mScene.setMedia(idx, "FIXME", result.path, result.mimeType);
+    			mScene.save();
     		}
 			catch (IOException ioe)
 			{
@@ -656,6 +685,19 @@ public class MediaProjectManager implements MediaManager {
 //		
 //		mOut = null;
     	
+    }
+    
+    public void updateMediaFile(int clipIndex, String path, String mimeType) throws IOException {
+    	MediaDesc mdesc = new MediaDesc ();
+    	mdesc.path = path;
+    	mdesc.mimeType = mimeType;
+    	
+    	MediaClip mClip = new MediaClip();
+		mClip.mMediaDescOriginal = mdesc;
+		
+		mMediaList.set(clipIndex, mClip);
+		
+		((SceneEditorActivity)mActivity).refreshClipPager(); // FIXME we should handle this by emitting a change event directly
     }
     
     
