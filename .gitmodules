@@ -19,3 +19,9 @@
 [submodule "external/RangeSeekBar"]
 	path = external/RangeSeekBar
 	url = https://github.com/vitriolix/RangeSeekBar.git
+[submodule "external/cacheword"]
+	path = external/cacheword
+	url = https://github.com/guardianproject/cacheword.git
+[submodule "external/IOCipher"]
+	path = external/IOCipher
+	url = https://github.com/guardianproject/IOCipher.git

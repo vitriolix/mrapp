@@ -1,4 +1,5 @@
 package info.guardianproject.mrapp;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.mrapp.media.OverlayCameraActivity;
 import info.guardianproject.mrapp.server.LoginActivity;
 
@@ -32,7 +33,28 @@ public class BaseActivity extends Activity {
 //public class BaseActivity extends Activity {
 
 	public SlidingMenu mSlidingMenu;
+	protected String dbFile;
+	protected String root = "/";
+	protected VirtualFileSystem vfs;
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		dbFile = getDir("vfs", MODE_PRIVATE).getAbsolutePath() + "/myfiles.db";
+	}
+
+	protected void onResume() {
+		super.onResume();
+		vfs = new VirtualFileSystem(dbFile);
+		// TODO don't use a hard-coded password! prompt for the password
+		vfs.mount("foo"); // FIXME need real password
+	}
+
+	protected void onDestroy() {
+		super.onDestroy();
+		vfs.unmount();
+	}
     
     public void initSlidingMenu ()
     {

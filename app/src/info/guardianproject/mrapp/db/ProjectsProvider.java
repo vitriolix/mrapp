@@ -11,7 +11,7 @@ import android.net.Uri;
 // FIXME rename this to SMProvier and get rid of LessonsProvider
 public class ProjectsProvider extends ContentProvider {  
 	private StoryMakerDB mDB;
-    private String mPassphrase = "foo"; //how and when do we set this??
+    private String mPassphrase = "foo"; // FIXME use CacheWord to manage this
     
     private static final String AUTHORITY = "info.guardianproject.mrapp.db.ProjectsProvider";
     public static final int PROJECTS = 101;
