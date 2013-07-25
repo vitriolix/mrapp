@@ -1,5 +1,6 @@
 package info.guardianproject.mrapp;
 
+import info.guardianproject.mrapp.AddClipsFragment.AddClipsPagerAdapter;
 import info.guardianproject.mrapp.media.AudioRecorderView;
 import info.guardianproject.mrapp.media.MediaProjectManager;
 import info.guardianproject.mrapp.model.Media;
@@ -292,6 +293,16 @@ public class OrderClipsFragment extends Fragment {
         
         
         return view;
+    }
+    
+    public void reloadClips()  {
+    	int pos = getCurrentClipIdx();
+        loadMedia();
+        previewClip(pos);
+    }
+    
+    public int getCurrentClipIdx() {
+    	return mCurrentClipIdx;
     }
     
     private void recordNarration ()

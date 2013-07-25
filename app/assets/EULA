@@ -1,42 +1,29 @@
-StoryMaker respects your journalistic and creative endeavors. The following terms are designed to protect our software and service, while preserving your underlying rights. Accordingly, this is a “living document,” and may change from time to time. By using the software, service, or any applications (including the StoryMaker website and mobile applications), you agree to be bound by the latest version, which can be found at ###URL###. We welcome your comments, and you are welcome to direct any feedback regarding these terms to ######.
+TERMS OF USE
 
-By accessing or using the StoryMaker website, service, or any applications (including mobile applications) made available by StoryMaker or Small World News (collectively, “the technology”), you agree to be bound by these terms of use. These Terms of Use affect your legal rights and obligations. If you do not agree to them, do not access or use the technology.
+WHO WE ARE
+We are The Guardian Project, an Open Source software project creating easy to use mobile applications and developer tools that help users more effectively protect their identity. We've developed ObscuraCam, an application for your Android mobile device, and we also maintain a website located at https://guardianproject.info. We will refer to the application hereafter as “App” and the website as “Site.” 
 
-Age: You must be at least 13 years old to use the Service.
+THE APP
+The App is designed to enable simple and straightforward redacting and anonymizing of mobile photos. To that end the App provides utilities for the user to automatically scan for faces and redact regions using methods such as solid color fill, pixelation and 'masking.' The tools we use for facial recognition are open source utilities developed by third parties and in no way do we claim that they will be 100% effective in facial detection.
 
-User: By using the StoryMaker application or otherwise accessing the technology, you represent that you are legally allowed to do so, that you have provided honest and acurate registration information, that you will only have one user account, and that you will keep your user information up-to-date.
+USAGE GUIDELINES
+The App is designed to protect the identity of users and bystanders. Please use it in accordance with this design. While we recognize that your mobile device is your own and you may take whatever pictures you see fit, we encourage you to use the App in socially responsible ways. 
 
-Identity & Security: You are responsible for all activity conducted through your user account, and agree not to provide access to any other person. You agree to safeguard your access information; and take reasonable action to prevent access to the site by unauthorized individuals. In the event we believe your account has been compromised, we may temporarily or permanently disable it and/or restrict your future access. If you have questions or require special accommodation, please contact ######.
+SOURCE CODE & LICENSING
+The App source code is hosted publicly at https://github.com/guardianproject/SecureSmartCam/ and is licensed under the GNU General Public License v3 (GPLv3). The GPL is a copyleft license for general use, meaning that derived works can only be distributed under the same license terms. In other words, you're more than welcome to use the project's code in your own projects, but they must be similarly licensed. Please reference https://github.com/guardianproject/SecureSmartCam/blob/master/LICENSE for relevant 
 
-Privacy: Your use of the technology is subject to our privacy policy, located ###here###.
+MINORS
+THIS SERVICE IS NOT MEANT FOR MINORS. We are committed to protecting the privacy needs of children and we encourage parents and guardians to take an active role in their children’s online activities and interests. The Service is not intended for and may not be used by children under the age of 13. Minors over the age of 13 should seek permission from their parents to use the App.
 
-Community Ethic: StoryMaker seeks to provide a “safe space” for everyone to share content. You will not use the technology to stalk, bully, defame, abuse, harass, abuse, threaten, intimidate or impersonate others; nor use the technology for any illegal purpose; nor to promote any such behavior. Likewise, you may not post obscene, libelous, hateful, racist, defamatory or otherwise objectionable content. You may not take any action to intentionally interfere with other users’ enjoyment of the technology, nor seek to circumvent it.
+CONTENT OWNERSHIP
+YOU OWN THE CONTENT YOU CREATE. Whatever pictures you create using our App are yours to do with what you wish. Any pictures you take will also be saved to your Device’s native Image folder and you can download those images to your computer according to the software your Device uses. 
 
-Limits on Commercial Use: You will not use the technology nor post any content primarily advertising or soliciting commercial services, however you may create stories showcasing your business or services provided they contain original content and narrative. You may not use the technology to send unsolicited commercial messages (“spam”).
+YOU DON’T OWN ALL THE CONTENT YOU SEE. If you didn’t create the Content, you don’t own it. This includes images you may have downloaded from the Internet or by other means. That means you cannot use it without permission from the original content owner, in accordance with their wishes. If you did create the Content, and you want to give someone permission to use it, that is your right.
 
-Content: In the interest of protecting the collective user body, we may remove or edit any content or user account which in our sole judgment interferes with the goals of the website, including references in the technology to syndicated content located elsewhere. You are solely responsible for any and all material that you create, submit, post, or display using the technology, including all words, music, images, logos, and names appearing in such material.
+And now for some boring legalese…
 
-Our Copyright: Copyright in the technology is reserved 2013 (or the current year, if later) Small World News, Inc. All United States and worldwide rights are reserved. Portions of the technology may be licensed under the GPLv3, which use and policy is described at http://www.gnu.org/licenses/gpl.html. To the extent such technology is governed by the GPLv3, those provisions shall control and are incorporated herein by reference.
+INDEMNIFICATION AND RELEASE
+You will indemnify, defend and hold us and our investors, officers, directors, affiliates, subsidiaries, licensors, partners, licensees, consultants, contractors, agents, attorneys, advertisers and employees (collectively, the “Indemnified Parties”) harmless from and against any and all actual or threatened suits, actions, proceedings (at law or in equity), claims (groundless or otherwise), damages, payments, deficiencies, fines, judgments, settlements, liabilities, losses, costs and expenses (including, but not limited to, reasonable attorney and expert fees, costs, penalties, interest and disbursements) resulting from any claim (including third party claims), suit, action, or proceeding against a Indemnified Party, whether successful or not, resulting from or arising in connection with: (i) your use of the Site, the Mobile applications, the Materials and/or the Service; (ii) your conduct; (iii) any breach by you of these Terms (including, but not limited to, any breach of any of your representations or warranties); and/or (iii) any Content you upload to, posted on, create on, transmitted through or linked from the Site. 
 
-Your Copyright & License: Small World News, Inc. does not claim ownership in any of your work. Instead, you hereby grant to Small World News a worldwide, non-exclusive, fully-paid, royalty free, transferable right to use the content you create using the technology. You acknowledge that Small World News may insert advertising in conjunction with your content without further notice.
-
-Disclaimers: The technology allows you to create, modify, and edit original content. You will use the technology only to create, produce, or edit works when you have the legal right to do so. You are solely responsible for any issues of copyright, publicity, privacy, or personality which may arise in your content. By using the technology, you warrant that any content submitted does not violate the rights of any third person and agree to pay for all royalties, fees, damages, and associated attorney’s fees related to any such claim. StoryMaker and Small World News do not endorse the content created, shared, or displayed using the technology, and have no obligation to screen, monitor, edit or delete any content.
-
-DMCA: If you believe your work has been infringed on the site, please remit the following information: a) letter demonstrating your authority to act; b) description of infringing material; c) description of where material can be found; d) your complete contact information; e) a statement that you have a good faith belief the use is impermissible and f) a statement that the above information is accurate and you are submitting it on behalf of the copyright holder. Such documents may be sent to:
-General Counsel
-###ADDRESS OF RECORD###
-Small World News
-
-Our Brand: You acknowledge the term “StoryMaker” is a trade and service mark of Small World News; U.S. Patent & Trademark registration pending (Serial ###) and shall not use it in any context which may create confusion as to the source of the services provided; on this or any other website; or in any other context.
-
-No Warranty: This service is provided as-is, with all faults, and without any warranty. By utilizing the technology you indemnify and hold harmless Small World News for any loss of data or other damage and agree that you will maintain your own backup versions of any and all submitted content. While we will make our best efforts to ensure quality service, there may be times when the technology is unavailable.
-
-Third-Party Indemnity: You acknowledge that Small World News may not be able to control the actions and/or speech of other users on this site and hereby indemnify, hold harmless and waive any claim or cause of action against us arising out of third-party communications.
-
-Limitation of Liability: To the extent permitted by law, any liability of Small World News shall be in its corporate capacity only and you acknowledge it is your intent that such submitted material be made publicly available in its original and/or edited, copied, altered, modified or other forms.
-
-Time Limit: You agree to waive any dispute not brought within one year from the date of the occurrence at issue.
-
-Severability: In the event any provision of this Agreement shall be held invalid, the same shall not invalidate or otherwise affect in any respect any other term or terms of this Agreement, which term or terms shall remain in full force and effect.
-
-Entire Agreement: This document, including those portions incorporated by reference, constitutes the complete agreement between the parties.
+UPDATES TO TERMS OF USE
+We reserve the right to change or modify any provisions of these Terms and any policies or guidelines governing your use of the Service, at any time in our sole discretion and without liability to you. Any such changes or modifications will be effective immediately upon posting of revisions on the Service. Your continued use of the Service following the posting of such changes or modifications constitutes your acceptance thereof. Therefore, you should frequently review these Terms and all applicable policies or guidelines on the Site in order to understand the terms and conditions applicable to your use of the Service. If you do not agree to any changes or modifications to these Terms or to any applicable policies or guidelines, your sole recourse is to stop using the Service. 

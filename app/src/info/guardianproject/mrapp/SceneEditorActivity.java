@@ -24,7 +24,9 @@ import org.ffmpeg.android.MediaUtils;
 import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.ProgressDialog;
 import org.json.JSONException;
+import org.witness.securesmartcam.ImageEditor;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -163,7 +165,6 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
         getSupportMenuInflater().inflate(R.menu.activity_scene_editor, menu);
         mMenu = menu;
         
@@ -172,9 +173,10 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	int idx;
         switch (item.getItemId()) {
             case R.id.itemForward:
-                int idx = getSupportActionBar().getSelectedNavigationIndex();
+                idx = getSupportActionBar().getSelectedNavigationIndex();
                 if (idx < 2) {
                     getSupportActionBar().setSelectedNavigationItem(Math.min(2, idx + 1));
                 } else {
@@ -199,6 +201,22 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
                     ((OrderClipsFragment) mFragmentTab1).loadTrim();
                     ((OrderClipsFragment) mFragmentTab1).enableTrimMode(true);
                     startActionMode(mActionModeCallback);
+                }
+                return true;
+            case R.id.itemRedact:
+                if (mFragmentTab1 != null) { 
+                	Media[] medias = mMPM.mScene.getMediaAsArray();
+                	idx = getOrderClipsFragment().getCurrentClipIdx();
+                	Media media = medias[idx];
+                	
+                	if (media != null) {
+                    	Intent passingIntent = new Intent(this, ImageEditor.class);
+                		Uri uri = Uri.parse("file://" + media.getPath());
+						passingIntent.setData(uri);
+						startActivityForResult(passingIntent, org.witness.sscphase1.ObscuraApp.IMAGE_EDITOR);
+                	} else {
+                		Log.d("SceneEditorActivity", "tried to redacta null clip!");
+                	}
                 }
                 return true;
                 
@@ -317,6 +335,7 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
 
         if (mMenu != null) {
             mMenu.findItem(R.id.itemInfo).setVisible(false);
+            mMenu.findItem(R.id.itemRedact).setVisible(false);
             mMenu.findItem(R.id.itemTrim).setVisible(false);
         }
 
@@ -356,6 +375,9 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
                 mMenu.findItem(R.id.itemInfo).setVisible(true);
                 mMenu.findItem(R.id.itemTrim).setVisible(true);
                 mMenu.findItem(R.id.itemForward).setEnabled(true);
+                if ((mMPM.mProject.getStoryType() == Project.STORY_TYPE_PHOTO) || (mMPM.mProject.getStoryType() == Project.STORY_TYPE_ESSAY)) {
+                    mMenu.findItem(R.id.itemRedact).setVisible(true);
+                }
             }
 
             if (mFragmentTab1 == null)
@@ -437,6 +459,16 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
             }
         }
     }
+    
+    public void refreshOrderClipsPager() {
+    	// FIXME yeah this check is dumb, let's just rename the fragment
+    	if (((OrderClipsFragment) mFragmentTab1) != null)
+    		getOrderClipsFragment().reloadClips(); 
+    }
+    
+    public OrderClipsFragment getOrderClipsFragment() {
+    	return ((OrderClipsFragment) mFragmentTab1);
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -504,13 +536,26 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
             		mPublishFragment.setYouTubeAuth(oauthToken);
             	}
             }
-            else // FIXME --- this gets called when we come back from taking a picture?
+            else if (reqCode == org.witness.sscphase1.ObscuraApp.IMAGE_EDITOR) {
+            	try
+            	{
+	        		mMPM.handleRedactedResponse(intent);
+	        		refreshClipPager();
+	        		refreshOrderClipsPager();
+            	}
+            	catch (IOException e)
+            	{
+            		Log.e(AppConstants.TAG,"error handling capture response: " + mCapturePath,e);
+            	}
+            }
+            else
             {
             	try
             	{
             		mMPM.handleResponse(intent, mCaptureFile);
 
             		refreshClipPager();
+            		refreshOrderClipsPager();
             	}
             	catch (IOException e)
             	{

@@ -1,9 +1,55 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/itemTrim" android:orderInCategory="1" android:icon="@drawable/ic_action_trim" android:visible="false" android:titleCondensed="Trim" android:title="Trim Clips" android:showAsAction="always"></item>
-    <item android:id="@+id/itemInfo" android:title="Info" android:visible="false" android:orderInCategory="2" android:showAsAction="always" android:icon="@drawable/ic_action_info"></item>
-    <item android:id="@+id/itemForward" android:icon="@drawable/ic_action_forward_white_redbg" android:showAsAction="always" android:visible="true" android:title="Forward" android:orderInCategory="3"></item>
-     <item android:id="@+id/addFromGallery" android:showAsAction="never" android:visible="true" android:title="@string/menu_add_from_gallery"></item>
-     <item android:id="@+id/addNewShot" android:showAsAction="never" android:visible="true" android:title="@string/menu_add_new_shot"></item>
-     <item android:id="@+id/delShot" android:showAsAction="never" android:visible="true" android:title="@string/menu_del_shot"></item>
-     
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/itemTrim"
+        android:icon="@drawable/ic_action_trim"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="Trim Clips"
+        android:titleCondensed="Trim"
+        android:visible="false">
+    </item>
+    <item
+        android:id="@+id/itemInfo"
+        android:icon="@drawable/ic_action_info"
+        android:orderInCategory="2"
+        android:showAsAction="always"
+        android:title="Info"
+        android:visible="false">
+    </item>
+    <item
+        android:id="@+id/itemRedact"
+        android:icon="@drawable/ic_obscur_redact"
+        android:orderInCategory="3"
+        android:showAsAction="always"
+        android:title="Redact"
+        android:visible="false">
+    </item>
+    <item
+        android:id="@+id/itemForward"
+        android:icon="@drawable/ic_action_forward_white_redbg"
+        android:orderInCategory="4"
+        android:showAsAction="always"
+        android:title="Forward"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/addFromGallery"
+        android:showAsAction="never"
+        android:title="@string/menu_add_from_gallery"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/addNewShot"
+        android:showAsAction="never"
+        android:title="@string/menu_add_new_shot"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/delShot"
+        android:showAsAction="never"
+        android:title="@string/menu_del_shot"
+        android:visible="true">
+    </item>
+
 </menu>

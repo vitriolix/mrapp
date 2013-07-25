@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="info.guardianproject.mrapp"
     android:installLocation="auto"
-    android:versionCode="83"
-    android:versionName="0.0.5-beta1-build83" >
+    android:versionCode="100085"
+    android:versionName="0.0.6-beta-isc-milestone1-build3" >
    
     <uses-sdk
         android:minSdkVersion="10"
@@ -229,7 +229,49 @@
 
 <activity android:name="net.hockeyapp.android.UpdateActivity" />
 
+	<activity android:name="org.witness.securesmartcam.ImageEditor" android:configChanges="orientation|keyboardHidden">
+			<intent-filter>
+            
+			    <action android:name="android.intent.action.EDIT" />
+                 <action android:name="android.intent.action.SEND" />
+                 
+                <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.ALTERNATIVE" /> 
+                 <category android:name="android.intent.category.SELECTED_ALTERNATIVE" /> 
+                 
+                 <data android:mimeType="image/*" />
+             </intent-filter>        
+        </activity>
         
-    </application>
+	<!-- Obscuracam Activities -->
+	
+        <activity
+            android:name="org.witness.securesmartcam.ImagePreview"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/image_preview" />
+        
+        <activity
+            android:name="org.witness.informa.InformaEditor"
+            android:theme="@style/Theme.CustomDialog" />
+        
+        <activity
+            android:name="org.witness.ssc.video.VideoEditor"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape" >
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.ALTERNATIVE" />
+                <category android:name="android.intent.category.SELECTED_ALTERNATIVE" />
+
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="org.witness.ssc.video.VideoPreferences" />
+</application>
 </manifest>
