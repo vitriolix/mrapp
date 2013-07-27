@@ -10,7 +10,10 @@ import info.guardianproject.mrapp.server.YouTubeSubmit;
 import info.guardianproject.mrapp.server.Authorizer.AuthorizationListener;
 import info.guardianproject.mrapp.server.soundcloud.SoundCloudUploader;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -367,13 +370,7 @@ public class PublishFragment extends Fragment {
         
         String ytdesc = desc;
         if (ytdesc.length() == 0) {
-            ytdesc = getString(R.string.default_youtube_desc); // can't
-                                                                             // leave
-                                                                             // the
-                                                                             // description
-                                                                             // blank
-                                                                             // for
-                                                                             // YouTube
+            ytdesc = getString(R.string.default_youtube_desc); // can't leave the description blank for YouTube
         }
         
         ytdesc += "\n\n" + getString(R.string.created_with_storymaker_tag);

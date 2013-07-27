@@ -5,10 +5,18 @@ import info.guardianproject.mrapp.media.MediaProjectManager;
 import info.guardianproject.mrapp.server.ServerManager;
 
 import java.io.BufferedReader;
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.VirtualFileSystem;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -24,7 +32,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class StoryMakerApp extends Application {
-
+	private static final String TAG = "StoryMakerApp";
 	
 	private static ServerManager mServerManager;
 	private static LessonManager mLessonManager;
@@ -43,7 +51,7 @@ public class StoryMakerApp extends Application {
 	
 	 public void InitializeSQLCipher(String dbName, String passphrase) {
 	        	      
-		 File databaseFile = getDatabasePath(dbName);
+		 java.io.File databaseFile = getDatabasePath(dbName);
 	     databaseFile.mkdirs();
 	     SQLiteDatabase database = SQLiteDatabase.openOrCreateDatabase(databaseFile, passphrase, null);
 
@@ -64,16 +72,91 @@ public class StoryMakerApp extends Application {
 		
 		SQLiteDatabase.loadLibs(this);
 
+		String dbFile;
+		String root = "/";
+		VirtualFileSystem vfs;
+		dbFile = getDir("vfs", MODE_PRIVATE).getAbsolutePath() + "/myfiles.db";
+		vfs = new VirtualFileSystem(dbFile);
+		// TODO don't use a hard-coded password! prompt for the password
+		vfs.mount("foo"); // FIXME need real password
+		
+		// debug log info
+		Collection<File> all = new ArrayList<File>();
+		File rootFile = new File("/");
+//		for (String s: rootFile.list()) {
+//			Log.d(TAG, "filenames: " + s);
+//		}
+	    addTree(rootFile, all);
+		for (File f: all) {
+			Log.d(TAG, "file: " + f);
+		}
+	//	
+//		// FIXME debug: copy file to sd on launch so we can see it
+		StoryMakerApp.copyFileOut(this, "/storage/sdcard0/Android/data/info.guardianproject.mrapp/files/stories/1/1374821856070smktmp.jpg");
+
 		initApp();
-		 
+
+		vfs.unmount();
+	}
+
+	public static void addTree(File file, Collection<File> all) {
+		File[] children = file.listFiles();
+		if (children != null) {
+			for (File child : children) {
+				all.add(child);
+				addTree(child, all);
+			}
+		}
 	}
 	
+	// for debugging iocipher, it copies a file out to the sd
+	// FIXME IOCipher make sure to remove in prod version
+	public static void copyFileOut(Context context, String filename) {
+		try {
+			File file = new File(filename);
+			Log.d(TAG, "copyFileOut file: " + file);
+			if (file.exists()) {
+				Log.d(TAG, "copyFileOut file exists, file.length(): " + file.length());
+				
+	//			BufferedReader br = new BufferedReader(new info.guardianproject.iocipher.FileReader(file));
+	
+				java.io.File outFile = new File(context.getExternalFilesDir(null), file.getName());
+				Log.d(TAG, "copyFileOut outFile: " + outFile);
+				
+	//			BufferedWriter bw = new BufferedWriter(new java.io.FileWriter(outFile));
+	//			String line;
+				
+	//			while((line = br.read .readLine()) != null) { 
+	//				bw.a append(line);
+	//			}
+				
+				byte[] buf = new byte[512]; // optimize the size of buffer to your need
+			    int num;
+				InputStream is = new info.guardianproject.iocipher.FileInputStream(file);
+				OutputStream os = new java.io.FileOutputStream(outFile);
+				while ((num = is.read(buf)) != -1) {
+					os.write(buf, 0, num);
+				}
+				is.close();
+				os.close();
+			} else {
+				Log.d(TAG, "copyFileOut file doesn't exists");
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private void initApp ()
 	{
 		try
 		{
 
-			clearRenderTmpFolders(getApplicationContext());
+//			clearRenderTmpFolders(getApplicationContext()); // FIXME IOCipher
 			
 			initServerUrls(this);
 	

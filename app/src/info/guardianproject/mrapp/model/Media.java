@@ -1,9 +1,13 @@
 package info.guardianproject.mrapp.model;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.ffmpeg.android.MediaUtils;
@@ -433,10 +437,20 @@ public class Media {
         }
         else if (media.getMimeType().startsWith("image"))
         {
+            Bitmap bitmap = null;
+            
             final BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = IMAGE_SAMPLE_SIZE * 2; //images will be bigger than video or audio
-        
-            return BitmapFactory.decodeFile(media.getPath(), options);
+            InputStream fileStream;
+			try {
+				fileStream = new FileInputStream(new File(media.getPath()));
+	            bitmap = BitmapFactory.decodeStream(fileStream, null, options);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//            bitmap = BitmapFactory.decodeFile(media.getPath(), options);  // FIXME IOCipher add code path for unencrypted here
+            return bitmap;
         }
         else if (media.getMimeType().startsWith("audio"))
         {

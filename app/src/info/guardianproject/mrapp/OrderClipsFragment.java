@@ -5,7 +5,8 @@ import info.guardianproject.mrapp.media.MediaProjectManager;
 import info.guardianproject.mrapp.model.Media;
 import info.guardianproject.mrapp.model.Project;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
 import java.io.IOException;
 
 import org.ffmpeg.android.MediaDesc;

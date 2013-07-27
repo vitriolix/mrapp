@@ -3,7 +3,11 @@ package info.guardianproject.mrapp.server;
 import info.guardianproject.mrapp.AppConstants;
 import info.guardianproject.mrapp.StoryMakerApp;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
@@ -151,9 +155,22 @@ public class ServerManager {
 		connect();
 		
 		MediaObject mObj = null;
-		
-		if (file != null)
-			mObj = mWordpress.newMediaObject(mimeType, file, false);
+		if (file != null) {
+
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream(file);
+				try {
+					mObj = mWordpress.newMediaObject(mimeType, fis, file.getName(), file.length(), false);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		return mObj.getUrl();
 	}

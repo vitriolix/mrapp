@@ -204,11 +204,11 @@ public class EditorBaseActivity extends BaseActivity {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
 
-                        	mMPM.mMediaHelper.playMedia(localMedia, mimeType);
+//                        	mMPM.mMediaHelper.playMedia(localMedia, mimeType); // FIXME IOCipher todo
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
-                            mMPM.mMediaHelper.shareMedia(localMedia, mimeType);
+//                            mMPM.mMediaHelper.shareMedia(localMedia, mimeType); // FIXME IOCipher todo
 
                            
                             break;

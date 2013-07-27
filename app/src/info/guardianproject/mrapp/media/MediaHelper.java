@@ -2,12 +2,17 @@ package info.guardianproject.mrapp.media;
 
 import info.guardianproject.mrapp.AppConstants;
 import info.guardianproject.mrapp.AppConstants;
+import info.guardianproject.mrapp.StoryMakerApp;
 
-import java.io.File;
+//import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
+
 import java.net.URI;
 import java.util.Date;
 
@@ -82,7 +87,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
         //uriCameraImage = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
-        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp);
+//        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp); // FIXME IOCipher -- force it to return image data in intent
         
         mActivity.startActivityForResult(intent, MediaConstants.CAMERA_RESULT);
         
@@ -163,24 +168,33 @@ public class MediaHelper implements MediaScannerConnectionClient {
 	      return thumb;
 	 }
 	 
-	 public MediaDesc handleIntentLaunch(Intent intent)
+	 public MediaDesc handleIntentLaunch(Intent intent, File fileCapturePath)
 	 {
 		 MediaDesc result = null;
 		 Uri uriLaunch = null;
 		 
-		 if (intent != null)
-		 {
+		 if (intent != null) {
 			 uriLaunch = intent.getData();
 			
 			// If originalImageUri is null, we are likely coming from another app via "share"
-			if (uriLaunch == null)
-			{
-				if (intent.hasExtra(Intent.EXTRA_STREAM)) 
-				{
+			if (uriLaunch == null) {
+				if (intent.hasExtra(Intent.EXTRA_STREAM)) {
 					uriLaunch = (Uri) mActivity.getIntent().getExtras().get(Intent.EXTRA_STREAM);
 					
+				} else if (intent.hasExtra("data")) {
+					// FIXME IOCipher not sure if this is ever more than a thumbnail
+            		Bitmap photo = (Bitmap) intent.getExtras().get("data");
+            		FileOutputStream fos;
+					try {
+						fos = new FileOutputStream(fileCapturePath);
+	            		photo.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+	            		StoryMakerApp.copyFileOut(mActivity, fileCapturePath.getPath());
+	            		uriLaunch = Uri.fromFile(fileCapturePath);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						Log.e("MediaHelper", Log.getStackTraceString(e));
+					}
 				}
-				
 			}
 		 }
 			

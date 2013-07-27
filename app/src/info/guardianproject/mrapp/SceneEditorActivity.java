@@ -10,9 +10,12 @@ import info.guardianproject.mrapp.model.Project;
 import info.guardianproject.mrapp.model.Scene;
 import info.guardianproject.mrapp.server.OAuthAccessTokenActivity;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileOutputStream;
+
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
 
 import net.micode.soundrecorder.SoundRecorder;
@@ -463,7 +466,7 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
         }
     }
 
-    private File mCapturePath;
+    private File mCaptureFile;
 
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent intent) {
@@ -477,16 +480,17 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
 
                 if (mProject.getStoryType() == Project.STORY_TYPE_VIDEO)
                 {
-                    mCapturePath = mMPM.mMediaHelper.captureVideo(fileMediaFolder);
+                	// FIXME IOCipher
+//                    mCapturePath = mMPM.mMediaHelper.captureVideo(fileMediaFolder);
 
                 }
                 else if (mProject.getStoryType() == Project.STORY_TYPE_PHOTO)
                 {
-                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
+                    mCaptureFile = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
                 }
                 else if (mProject.getStoryType() == Project.STORY_TYPE_ESSAY)
                 {
-                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
+                    mCaptureFile = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
                 }
 
             }
@@ -500,17 +504,17 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
             		mPublishFragment.setYouTubeAuth(oauthToken);
             	}
             }
-            else
+            else // FIXME --- this gets called when we come back from taking a picture?
             {
             	try
             	{
-            		mMPM.handleResponse(intent, mCapturePath);
+            		mMPM.handleResponse(intent, mCaptureFile);
 
             		refreshClipPager();
             	}
             	catch (IOException e)
             	{
-            		Log.e(AppConstants.TAG,"error handling capture response: " + mCapturePath,e);
+            		Log.e(AppConstants.TAG,"error handling capture response: " + mCaptureFile,e);
             	}
             }
 

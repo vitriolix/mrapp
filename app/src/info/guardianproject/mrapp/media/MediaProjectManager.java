@@ -10,11 +10,14 @@ import info.guardianproject.mrapp.model.Media;
 import info.guardianproject.mrapp.model.Project;
 import info.guardianproject.mrapp.model.Scene;
 
-import java.io.File;
-import java.io.FileInputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,7 +136,7 @@ public class MediaProjectManager implements MediaManager {
     
     public void handleResponse (Intent intent, File fileCapturePath) throws IOException
     {                
-        MediaDesc result = mMediaHelper.handleIntentLaunch(intent);
+        MediaDesc result = mMediaHelper.handleIntentLaunch(intent, fileCapturePath);
         
         if (result == null && fileCapturePath != null)
         {
@@ -179,10 +182,11 @@ public class MediaProjectManager implements MediaManager {
     		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     		 
     		mUseInternal = settings.getBoolean("p_use_internal_storage",false);
-        	
-    		if (mUseInternal)
-    			mFileExternDir = context.getDir(AppConstants.FOLDER_PROJECTS_NAME,Context.MODE_WORLD_WRITEABLE|Context.MODE_WORLD_READABLE);
-    		else
+      
+    		// FIXME IOCipher: be smart about this when not in secure mode
+//    		if (mUseInternal)
+//    			mFileExternDir = context.getDir(AppConstants.FOLDER_PROJECTS_NAME,Context.MODE_WORLD_WRITEABLE|Context.MODE_WORLD_READABLE);
+//    		else
     			mFileExternDir = new File(context.getExternalFilesDir(null),AppConstants.FOLDER_PROJECTS_NAME);
     		
 	    	mFileExternDir.mkdirs();
@@ -195,9 +199,10 @@ public class MediaProjectManager implements MediaManager {
 
 		 File fileRenderTmpDir = null;
 		 
-		 if (mUseInternal)
-			 fileRenderTmpDir = context.getDir("render", Context.MODE_PRIVATE);
-		 else
+		// FIXME IOCipher: be smart about this when not in secure mode
+//		 if (mUseInternal)
+//			 fileRenderTmpDir = context.getDir("render", Context.MODE_PRIVATE);
+//		 else
 			 fileRenderTmpDir = new File(context.getExternalFilesDir(null),"render");
 		 
 		 return fileRenderTmpDir;
@@ -543,8 +548,8 @@ public class MediaProjectManager implements MediaManager {
         {
         	fileOrDirectory.delete();
         }
-        else
-        	fileOrDirectory.deleteOnExit();
+//        else
+//        	fileOrDirectory.deleteOnExit(); // FIXME IOCipher has this as Not Implemented
     }
     
     
