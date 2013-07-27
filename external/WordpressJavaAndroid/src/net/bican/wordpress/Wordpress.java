@@ -255,44 +255,52 @@ interface PingbackExtensionsBridge {
  */
 public class Wordpress {
 
+  private static byte[] getBytesFromStream(InputStream is, long length) throws IOException {
+	  // You cannot create an array using a long type.
+	  // It needs to be an int type.
+	  // Before converting to an int type, check
+	  // to ensure that file is not larger than Integer.MAX_VALUE.
+	  if (length > Integer.MAX_VALUE) {
+	    // File is too large
+	  }
+	
+	  // Create the byte array to hold the data
+	  byte[] bytes = new byte[(int) length];
+
+	  int offset = 0;
+	  int numRead = 0;
+	  try {
+		  // Read in the bytes
+		  while (offset < bytes.length
+		      && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+		    offset += numRead;
+		  }
+	  } catch (IOException e) {
+	      e.printStackTrace();
+	  }
+	  
+//	  // Ensure all the bytes have been read in
+	  if (offset < bytes.length) {
+	    throw new IOException("Could not completely read file");
+	  }
+	  return bytes;
+  }
+	
   private static byte[] getBytesFromFile(File file) {
     byte[] result = null;
     InputStream is = null;
     try {
-      is = new FileInputStream(file);
-
       // Get the size of the file
       long length = file.length();
+  	
+  	  is = new FileInputStream(file);
 
-      // You cannot create an array using a long type.
-      // It needs to be an int type.
-      // Before converting to an int type, check
-      // to ensure that file is not larger than Integer.MAX_VALUE.
-      if (length > Integer.MAX_VALUE) {
-        // File is too large
-      }
-
-      // Create the byte array to hold the data
-      byte[] bytes = new byte[(int) length];
-
-      // Read in the bytes
-      int offset = 0;
-      int numRead = 0;
-      while (offset < bytes.length
-          && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-        offset += numRead;
-      }
-
-      // Ensure all the bytes have been read in
-      if (offset < bytes.length) {
-        throw new IOException(
-            "Could not completely read file " + file.getName()); //$NON-NLS-1$
-      }
-      result = bytes;
+      result = getBytesFromStream(is, length);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     } catch (IOException e) {
-      e.printStackTrace();
+    	(new IOException(
+    	        "Could not completely read file " + file.getName())).printStackTrace(); //$NON-NLS-1$
     } finally {
       if (is != null)
         try {
@@ -683,6 +691,33 @@ public class Wordpress {
     att.setOverwrite(overwrite);
     att.setName(file.getName());
     att.setBits(getBytesFromFile(file));
+    XmlRpcStruct d = att.toXmlRpcStruct();
+    XmlRpcStruct r = this.mw.newMediaObject(0, this.username, this.password, d);
+    MediaObject result = new MediaObject();
+    result.fromXmlRpcStruct(r);
+    return result;
+  }
+
+  /**
+   * @param mimeType
+   *          Mime type of the file
+   * @param file
+   *          File name
+   * @param overwrite
+   *          true/false
+   * @return new object location
+   * @throws XmlRpcFault
+   *           Generic exception for xml-rpc operations
+ * @throws IOException 
+   */
+  @SuppressWarnings("boxing")
+  public MediaObject newMediaObject(String mimeType, InputStream is, String fileName, long length, 
+      Boolean overwrite) throws XmlRpcFault, IOException {
+    Attachment att = new Attachment();
+    att.setType(mimeType);
+    att.setOverwrite(overwrite);
+    att.setName(fileName);
+    att.setBits(getBytesFromStream(is, length));
     XmlRpcStruct d = att.toXmlRpcStruct();
     XmlRpcStruct r = this.mw.newMediaObject(0, this.username, this.password, d);
     MediaObject result = new MediaObject();
