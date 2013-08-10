@@ -21,8 +21,10 @@ import info.guardianproject.mrapp.server.Authorizer.AuthorizationListener;
 import info.guardianproject.onionkit.trust.StrongHttpsClient;
 
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+//import java.io.File;
+//import java.io.FileInputStream;
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

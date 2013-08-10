@@ -1,6 +1,7 @@
 package info.guardianproject.mrapp.media.exporter;
 
-import java.io.File;
+//import java.io.File;
+import info.guardianproject.iocipher.File;
 import java.util.ArrayList;
 
 import org.ffmpeg.android.FfmpegController;
@@ -55,11 +56,11 @@ public class MediaSlideshowExporter extends MediaExporter {
     		File fileTest = new File(mOut.path);
 	         if (fileTest.exists() && fileTest.length() > 0)
 	         {
-	    		MediaScannerConnection.scanFile(
-	     				mContext,
-	     				new String[] {mOut.path},
-	     				new String[] {outputType},
-	     				null);
+//	    		MediaScannerConnection.scanFile( 	// FIXME IOCipher
+//	     				mContext,
+//	     				new String[] {mOut.path},
+//	     				new String[] {outputType},
+//	     				null);
 	    
 	    		msg = mHandler.obtainMessage(4);
 	            msg.getData().putString("path",mOut.path);

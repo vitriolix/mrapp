@@ -159,6 +159,10 @@
         <activity android:name=".media.OverlayCameraActivity" 
              android:screenOrientation="landscape"
             />
+        
+        <activity android:name=".ciphercam.CameraActivity" 
+             android:screenOrientation="landscape"
+            />
        
          <activity android:name=".media.AudioRecorderActivity" />
 

@@ -49,6 +49,10 @@ public class StoryMakerApp extends Application {
 	private final static String URL_PATH_LESSONS = "/appdata/lessons/";
 	private final static String STORYMAKER_DEFAULT_SERVER_URL = "https://storymaker.cc";
 	
+	static {
+		System.loadLibrary("pipes");
+	}
+	
 	 public void InitializeSQLCipher(String dbName, String passphrase) {
 	        	      
 		 java.io.File databaseFile = getDatabasePath(dbName);
@@ -92,7 +96,8 @@ public class StoryMakerApp extends Application {
 		}
 	//	
 //		// FIXME debug: copy file to sd on launch so we can see it
-		StoryMakerApp.copyFileOut(this, "/storage/sdcard0/Android/data/info.guardianproject.mrapp/files/stories/1/1374821856070smktmp.jpg");
+		StoryMakerApp.copyFileOut(this, "/storage/sdcard0/Android/data/info.guardianproject.mrapp/files/stories/3/1375895670275smktmp.jpg");
+		
 
 		initApp();
 

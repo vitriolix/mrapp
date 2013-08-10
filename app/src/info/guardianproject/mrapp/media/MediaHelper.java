@@ -3,6 +3,7 @@ package info.guardianproject.mrapp.media;
 import info.guardianproject.mrapp.AppConstants;
 import info.guardianproject.mrapp.AppConstants;
 import info.guardianproject.mrapp.StoryMakerApp;
+import info.guardianproject.mrapp.ciphercam.CameraActivity;
 
 //import java.io.File;
 import java.io.FileNotFoundException;
@@ -86,8 +87,10 @@ public class MediaHelper implements MediaScannerConnectionClient {
         mMediaUriTmp = Uri.fromFile(mMediaFileTmp);
         //uriCameraImage = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
-//        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp); // FIXME IOCipher -- force it to return image data in intent
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
+//        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp); // FIXME IOCipher -- this forces it to return image data in intent? bs, just returns thumbnail
+        Intent intent = new Intent(mActivity, CameraActivity.class);
+        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp);
         
         mActivity.startActivityForResult(intent, MediaConstants.CAMERA_RESULT);
         

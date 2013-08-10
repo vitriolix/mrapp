@@ -477,18 +477,18 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
             if (reqCode == REQ_OVERLAY_CAM)
             {
                 File fileMediaFolder = mMPM.getExternalProjectFolder(mProject, getBaseContext());
-
-                if (mProject.getStoryType() == Project.STORY_TYPE_VIDEO)
+                int storyType = mProject.getStoryType();
+                if (storyType == Project.STORY_TYPE_VIDEO)
                 {
                 	// FIXME IOCipher
 //                    mCapturePath = mMPM.mMediaHelper.captureVideo(fileMediaFolder);
 
                 }
-                else if (mProject.getStoryType() == Project.STORY_TYPE_PHOTO)
+                else if (storyType == Project.STORY_TYPE_PHOTO)
                 {
                     mCaptureFile = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
                 }
-                else if (mProject.getStoryType() == Project.STORY_TYPE_ESSAY)
+                else if (storyType == Project.STORY_TYPE_ESSAY)
                 {
                     mCaptureFile = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
                 }
