@@ -81,7 +81,8 @@ public class MediaHelper implements MediaScannerConnectionClient {
         mMediaUriTmp = Uri.fromFile(mMediaFileTmp);
         //uriCameraImage = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
+        Intent intent = new Intent(mActivity, OverlayCameraActivity.class);
         intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp);
         
         mActivity.startActivityForResult(intent, MediaConstants.CAMERA_RESULT);

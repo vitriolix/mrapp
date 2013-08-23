@@ -34,7 +34,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class MediaProjectManager implements MediaManager {
-	
+	private static final String TAG = "MediaProjectManager";
 
     public final static String EXPORT_VIDEO_FILE_EXT = ".mp4";
 //    public final static String EXPORT_AUDIO_FILE_EXT = ".m4a";//".ogg";//"".3gp";
@@ -117,7 +117,7 @@ public class MediaProjectManager implements MediaManager {
                 }
                 catch (IOException ioe)
                 {
-                    Log.e(AppConstants.TAG,"error adding media from saved project", ioe);
+                    Log.e(TAG,"error adding media from saved project", ioe);
                 }
         	}
         }
@@ -146,6 +146,7 @@ public class MediaProjectManager implements MediaManager {
     	{
     		try
     		{
+    			Log.d(TAG, "added new media to project: " + result.path);
     			addMediaFile(mClipIndex, result.path, result.mimeType);
     			// FIXME use media type as definied in json
     			mScene.setMedia(mClipIndex, "FIXME", result.path, result.mimeType);
@@ -154,7 +155,7 @@ public class MediaProjectManager implements MediaManager {
     		}
 			catch (IOException ioe)
 			{
-				Log.e(AppConstants.TAG,"error adding media result",ioe);
+				Log.e(TAG, "error adding media result",ioe);
 			}
         }
         
@@ -634,7 +635,7 @@ public class MediaProjectManager implements MediaManager {
 //	    		thread.start();
 //			} catch (Exception e) {
 //				updateStatus("error merging video and audio");
-//				Log.e(AppConstants.TAG,"error merging video and audio",e);
+//				Log.e(TAG, "error merging video and audio",e);
 //			}
 //			
 //			

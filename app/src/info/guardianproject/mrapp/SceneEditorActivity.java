@@ -467,30 +467,28 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
 
     @Override
     protected void onActivityResult(int reqCode, int resCode, Intent intent) {
-
-    	
         if (resCode == RESULT_OK)
         {
-            if (reqCode == REQ_OVERLAY_CAM)
-            {
-                File fileMediaFolder = mMPM.getExternalProjectFolder(mProject, getBaseContext());
-
-                if (mProject.getStoryType() == Project.STORY_TYPE_VIDEO)
-                {
-                    mCapturePath = mMPM.mMediaHelper.captureVideo(fileMediaFolder);
-
-                }
-                else if (mProject.getStoryType() == Project.STORY_TYPE_PHOTO)
-                {
-                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
-                }
-                else if (mProject.getStoryType() == Project.STORY_TYPE_ESSAY)
-                {
-                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
-                }
-
-            }
-            else if (reqCode == REQ_YOUTUBE_AUTH)
+//            if (reqCode == REQ_OVERLAY_CAM)
+//            {
+//                File fileMediaFolder = mMPM.getExternalProjectFolder(mProject, getBaseContext());
+//
+//                if (mProject.getStoryType() == Project.STORY_TYPE_VIDEO)
+//                {
+//                    mCapturePath = mMPM.mMediaHelper.captureVideo(fileMediaFolder);
+//
+//                }
+//                else if (mProject.getStoryType() == Project.STORY_TYPE_PHOTO)
+//                {
+//                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
+//                }
+//                else if (mProject.getStoryType() == Project.STORY_TYPE_ESSAY)
+//                {
+//                    mCapturePath = mMPM.mMediaHelper.capturePhoto(fileMediaFolder);
+//                }
+//
+//            }
+            /*else*/ if (reqCode == REQ_YOUTUBE_AUTH)
             {
             	if (resCode == RESULT_OK)
             	{

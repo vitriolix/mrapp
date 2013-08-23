@@ -186,8 +186,8 @@ public class OrderClipsFragment extends Fragment {
 	              mAudioNarrator = new AudioRecorderView(mFileAudioNarration,getActivity());
 	          }
 	    	  
-        	View viewRow = view.findViewById(R.id.rowNarration);
-        	viewRow.setVisibility(View.VISIBLE);
+//        	View viewRow = view.findViewById(R.id.rowNarration); // FIXME demo, remove
+//        	viewRow.setVisibility(View.VISIBLE);
         	
 	        mButtonAddNarration.setEnabled(true);
 	        

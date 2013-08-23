@@ -10,12 +10,6 @@
         android:layout_height="fill_parent"
         android:layout_weight="1" />
 
-    <ImageView
-        android:id="@+id/overlay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
-
     <ImageButton
         android:id="@+id/shutter_button"
         android:layout_width="64dp"

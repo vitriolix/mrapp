@@ -36,7 +36,8 @@
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/tap_to_start_capture"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" 
+                    android:visibility="invisible"/>
             </FrameLayout>
 
             <TextView
@@ -84,7 +85,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:src="@drawable/ic_context_tip" />
+                    android:src="@drawable/ic_context_tip" 
+                    android:visibility="gone" />
 
                 
                 <TextView
