@@ -545,7 +545,7 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
             	}
             	catch (IOException e)
             	{
-            		Log.e(AppConstants.TAG,"error handling capture response: " + mCapturePath,e);
+            		Log.e(AppConstants.TAG,"error handling capture response: " + mCaptureFile,e);
             	}
             }
             else
