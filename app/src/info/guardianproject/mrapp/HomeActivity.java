@@ -388,7 +388,7 @@ public class HomeActivity extends BaseActivity {
     private void initIntroActivityList ()
     {
       	setContentView(R.layout.activity_home_intro);
-      	initSlidingMenu();
+      	//initSlidingMenu();
       	
 		int[] titles1 =
 			{(R.string.tutorial_title_1),
@@ -636,7 +636,7 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
-
+/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -674,7 +674,7 @@ public class HomeActivity extends BaseActivity {
 		}
         
 		return true;
-	}
+	}*/
     
 	void collectAndSendLog(){
 		
