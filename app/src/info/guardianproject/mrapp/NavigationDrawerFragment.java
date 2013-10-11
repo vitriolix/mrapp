@@ -24,14 +24,15 @@ public class NavigationDrawerFragment extends Fragment {
 		
         View rootView = inflater.inflate(R.layout.fragment_drawer, container, false);
         
-        initNavigationDrawer(rootView);
+        initNavigationDrawerListeners(rootView);
         
         return rootView;
 	}
 	
-	private void initNavigationDrawer(View view)
+	private void initNavigationDrawerListeners(View view)
 	{	
-		/*
+		final Activity activity = (BaseActivity) getActivity();
+		
         ImageButton btnDrawerQuickCaptureVideo = (ImageButton) findViewById(R.id.btnDrawerQuickCaptureVideo);
         ImageButton btnDrawerQuickCapturePhoto = (ImageButton) findViewById(R.id.btnDrawerQuickCapturePhoto);
         ImageButton btnDrawerQuickCaptureAudio = (ImageButton) findViewById(R.id.btnDrawerQuickCaptureAudio);
@@ -50,7 +51,7 @@ public class NavigationDrawerFragment extends Fragment {
             	
             	String dateNowStr = new Date().toLocaleString();
                 
-            	Intent intent = new Intent(BaseActivity.this, StoryNewActivity.class);
+            	Intent intent = new Intent(activity, StoryNewActivity.class);
             	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             	intent.putExtra("story_name", "Quick Story " + dateNowStr);
             	intent.putExtra("story_type", 0);
@@ -66,13 +67,13 @@ public class NavigationDrawerFragment extends Fragment {
             	
             	String dateNowStr = new Date().toLocaleString();
                 
-            	Intent intent = new Intent(BaseActivity.this, StoryNewActivity.class);
+            	Intent intent = new Intent(activity, StoryNewActivity.class);
             	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             	intent.putExtra("story_name", "Quick Story " + dateNowStr);
             	intent.putExtra("story_type", 2);
             	intent.putExtra("auto_capture", true);
                 
-                 activity.startActivity(intent);           
+                activity.startActivity(intent);           
              }
         });
         
@@ -82,41 +83,33 @@ public class NavigationDrawerFragment extends Fragment {
             	
             	String dateNowStr = new Date().toLocaleString();
                 
-            	Intent intent = new Intent(this, StoryNewActivity.class);
+            	Intent intent = new Intent(activity, StoryNewActivity.class);
             	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             	intent.putExtra("story_name", "Quick Story " + dateNowStr);
             	intent.putExtra("story_type", 1);
             	intent.putExtra("auto_capture", true);
                 
-                 activity.startActivity(intent);           
+                activity.startActivity(intent);           
              }
         });
         
         btnDrawerHome.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-            	
-            	mSlidingMenu.showContent(true);
-                
-            	 Intent i = new Intent(activity, HomeActivity.class);
-                 activity.startActivity(i);
+            public void onClick(View v) {           	
+				Intent i = new Intent(activity, HomeActivity.class);
+				activity.startActivity(i);
             }
         });
         btnDrawerProjects.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-            	mSlidingMenu.showContent(true);
-            	  Intent i = new Intent(activity, ProjectsActivity.class);
-                  activity.startActivity(i);
+            public void onClick(View v) {         	
+            	Intent i = new Intent(activity, ProjectsActivity.class);
+            	activity.startActivity(i);
             }
         });
         btnDrawerLessons.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            	mSlidingMenu.showContent(true);
-            	
                 Intent i = new Intent(activity, LessonsActivity.class);
                 activity.startActivity(i);
             }
@@ -124,23 +117,19 @@ public class NavigationDrawerFragment extends Fragment {
         
         btnDrawerAccount.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-            	mSlidingMenu.showContent(true);
-                Intent i = new Intent(activity, LoginActivity.class);
-                activity.startActivity(i);
+            public void onClick(View v) {      	
+               Intent i = new Intent(activity, LoginActivity.class);
+               activity.startActivity(i);
             }
         });
         
         btnDrawerSettings.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-            	mSlidingMenu.showContent(true);
-
-                Intent i = new Intent(activity, SimplePreferences.class);
-                activity.startActivity(i);
+               Intent i = new Intent(activity, SimplePreferences.class);
+               activity.startActivity(i);
             }
-        });*/
+        });
 	}
 
 }
