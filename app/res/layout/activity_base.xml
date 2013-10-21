@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <fragment android:name="info.guardianproject.mrapp.NavigationDrawerFragment"
-              android:id="@+id/article_fragment"
+              android:id="@+id/drawer_placeholder_fragment"
               android:layout_width="240dp"
               android:layout_height="match_parent"
               android:layout_gravity="start"

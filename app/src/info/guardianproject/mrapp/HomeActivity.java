@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import net.hockeyapp.android.CrashManager;
@@ -28,12 +27,9 @@ import org.holoeverywhere.app.AlertDialog;
 import org.holoeverywhere.app.ProgressDialog;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -61,15 +57,12 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 public class HomeActivity extends BaseActivity {
 
-    
     private ProgressDialog mLoading;
     private ArrayList<Lesson> mLessonsCompleted;
     private ArrayList<Project> mListProjects;
 
-
 	CardUI mCardView;
     
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
     
@@ -388,7 +381,6 @@ public class HomeActivity extends BaseActivity {
     private void initIntroActivityList ()
     {
       	setContentView(R.layout.activity_home_intro);
-      	//initSlidingMenu();
       	
 		int[] titles1 =
 			{(R.string.tutorial_title_1),
@@ -636,14 +628,12 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
-/*
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-
+		
         if (item.getItemId() == android.R.id.home)
-        {
-        	mSlidingMenu.toggle();
-        }
+        {}
         else if (item.getItemId() == R.id.menu_settings)
         {
 			showPreferences();
@@ -673,8 +663,8 @@ public class HomeActivity extends BaseActivity {
             startActivity(i);
 		}
         
-		return true;
-	}*/
+        return super.onOptionsItemSelected(item);
+	}
     
 	void collectAndSendLog(){
 		
@@ -706,10 +696,6 @@ public class HomeActivity extends BaseActivity {
 		Intent intent = new Intent(this,SimplePreferences.class);
 		this.startActivityForResult(intent, 9999);
 	}
-
-
-    
-    
 
     //for log sending
     public static final String LOG_COLLECTOR_PACKAGE_NAME = "com.xtralogic.android.logcollector";//$NON-NLS-1$
@@ -833,5 +819,4 @@ public class HomeActivity extends BaseActivity {
 
 		      writer.close();
 	 }
-    
 }

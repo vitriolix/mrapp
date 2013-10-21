@@ -3,10 +3,16 @@ package info.guardianproject.mrapp;
 import info.guardianproject.mrapp.model.Media;
 import info.guardianproject.mrapp.model.Project;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.ffmpeg.android.MediaUtils;
 import org.holoeverywhere.app.AlertDialog;
@@ -17,7 +23,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,22 +88,41 @@ public class ProjectsActivity extends BaseActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+             
+            if (item.getItemId() == R.id.menu_new_project)
+            {
+            	startActivity(new Intent(this, StoryNewActivity.class));
+            }
+            else if (item.getItemId() == R.id.menu_settings)
+            {
+     			showPreferences();
+     		}
+     		else if (item.getItemId() == R.id.menu_logs)
+     		{
+     			collectAndSendLog();
+     		}
+     		else if (item.getItemId() == R.id.menu_new_project2)
+     		{
+     			 startActivity(new Intent(this, StoryNewActivity.class));
+     		}
+     		else if (item.getItemId() == R.id.menu_bug_report)
+     		{
+     			String url = "https://docs.google.com/forms/d/1KrsTg-NNr8gtQWTCjo-7Fv2L5cml84EcmIuGGNiC4fY/viewform";
 
-		switch (item.getItemId()) {
-         case android.R.id.home:
+                 Intent i = new Intent(Intent.ACTION_VIEW);
+                 i.setData(Uri.parse(url));
+                 startActivity(i);
+     		}
+     		else if (item.getItemId() == R.id.menu_about)
+     		{
+     			String url = "https://storymaker.cc";
 
-	        	NavUtils.navigateUpFromSameTask(this);
-	        	
-             return true;
-         case R.id.menu_new_project:
- 		
-			 startActivity(new Intent(this, StoryNewActivity.class));
-
-             return true;
-     }
- 		
-     return super.onOptionsItemSelected(item);
-  
+                 Intent i = new Intent(Intent.ACTION_VIEW);
+                 i.setData(Uri.parse(url));
+                 startActivity(i);
+     		}
+             
+            return super.onOptionsItemSelected(item); 
 	}
     
 	
@@ -105,9 +132,30 @@ public class ProjectsActivity extends BaseActivity {
 		this.startActivityForResult(intent, 9999);
 	}
 
-    
-    
- 
+	void collectAndSendLog(){
+		
+		File fileLog = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),"storymakerlog.txt");
+		fileLog.getParentFile().mkdirs();
+		
+		try
+		{
+			writeLogToDisk("StoryMaker",fileLog);
+			writeLogToDisk("FFMPEG",fileLog);
+			writeLogToDisk("SOX",fileLog);
+			
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.putExtra(Intent.EXTRA_EMAIL, "help@guardianproject.info");
+			i.putExtra(Intent.EXTRA_SUBJECT, "StoryMaker Log");
+			i.putExtra(Intent.EXTRA_TEXT, "StoryMaker log email: " + new Date().toGMTString());
+			i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileLog));
+			i.setType("text/plain");
+			startActivity(Intent.createChooser(i, "Send mail"));
+		}
+		catch (IOException e)
+		{
+			
+		}
+    }
 
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
@@ -300,9 +348,25 @@ public class ProjectsActivity extends BaseActivity {
         }
         
     }
-
-
-   
     
-    
+    private void writeLogToDisk (String tag, File fileLog) throws IOException
+	{	 
+		FileWriter fos = new FileWriter(fileLog,true);
+		BufferedWriter writer = new BufferedWriter(fos);
+
+	    Process process = Runtime.getRuntime().exec("logcat -d " + tag + ":D *:S");
+	    BufferedReader bufferedReader = 
+	    new BufferedReader(new InputStreamReader(process.getInputStream()));
+	
+	 
+	    String line;
+	    while ((line = bufferedReader.readLine()) != null) {
+		  
+		    writer.write(line);
+		    writer.write('\n');
+	    }
+	    bufferedReader.close();
+	
+	    writer.close();
+	}
 }
