@@ -17,8 +17,6 @@ import android.widget.ImageButton;
 
 public class NavigationDrawerFragment extends Fragment {
 	
-	private static DrawerLayout sDrawerLayout;
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -138,12 +136,6 @@ public class NavigationDrawerFragment extends Fragment {
 	 * Doing this right now since drawerlayout UI is in a fragment instead of a ListView.
 	 */
 	private void closeNavDrawer() {	
-		if(sDrawerLayout != null) {
-			sDrawerLayout.closeDrawers();
-		}
+
 	}
-	
-    public static void setSDrawerLayout(DrawerLayout drawerLayout) {
-    	sDrawerLayout = drawerLayout;
-    }
 }

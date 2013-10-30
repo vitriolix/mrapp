@@ -389,6 +389,8 @@ public class LessonsActivity extends BaseActivity implements ActionBar.TabListen
     	
     	if (!handled)
     		NavUtils.navigateUpFromSameTask(this);
+    	
+    	super.onBackPressed();
     }
     
 	 @Override

@@ -369,4 +369,9 @@ public class ProjectsActivity extends BaseActivity {
 	
 	    writer.close();
 	}
+    
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

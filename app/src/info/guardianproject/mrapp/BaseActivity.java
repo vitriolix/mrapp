@@ -21,20 +21,17 @@ public class BaseActivity extends Activity {
     @Override
 	public void setContentView(int layoutResId) {
 	
-    	closeNavDrawer();
-    	
     	super.setContentView(R.layout.activity_base);	
     	mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_wrapper);
-    	  	
-    	//FIXME Need to change when updating the UI (see full description in NavigationDrawerFragment.setSDrawerLayout)
-    	sDrawerLayout = mDrawerLayout;
-    	NavigationDrawerFragment.setSDrawerLayout(mDrawerLayout);
-    	
-    	 	
     	View childLayout = getLayoutInflater().inflate(layoutResId);
+    	
     	mDrawerLayout.addView(childLayout, 0);
     	
     	initNavigationDrawer();
+    	
+    	//FIXME Need to change when updating the UI (see full description in NavigationDrawerFragment.closeNavDrawer)
+    	closeNavDrawer();
+    	sDrawerLayout = mDrawerLayout;
     	
     	switch (layoutResId) {
         case R.layout.activity_home:
@@ -49,10 +46,11 @@ public class BaseActivity extends Activity {
     	}
 	}  
     
-    private void closeNavDrawer()
+    public static void closeNavDrawer()
     {
     	if(sDrawerLayout != null) {
     		sDrawerLayout.closeDrawers();
+    		sDrawerLayout.invalidate();
     	}
     }
     
@@ -65,10 +63,11 @@ public class BaseActivity extends Activity {
                 R.string.nav_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.nav_drawer_close /* "close drawer" description for accessibility */
                 ) {
+        	
             public void onDrawerClosed(View view) {
                 supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
-
+            
             public void onDrawerOpened(View drawerView) {
             	supportInvalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -82,14 +81,16 @@ public class BaseActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); 
+        
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        return super.onPrepareOptionsMenu(menu);
+        //return super.onPrepareOptionsMenu(menu);
+    	return true;
     }
 
     @Override

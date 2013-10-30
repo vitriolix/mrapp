@@ -819,4 +819,9 @@ public class HomeActivity extends BaseActivity {
 
 		      writer.close();
 	 }
+	 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }
