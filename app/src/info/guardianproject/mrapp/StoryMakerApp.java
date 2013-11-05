@@ -72,7 +72,7 @@ public class StoryMakerApp extends Application {
 	{
 		try
 		{
-
+			//FIXME this call should not do anything since we don't know the path to the old files yet
 			clearRenderTmpFolders(getApplicationContext());
 			
 			initServerUrls(this);
@@ -100,7 +100,7 @@ public class StoryMakerApp extends Application {
 		    }
 	
 
-	    	File fileDirLessons = new File(getExternalFilesDir(null), lessonLocalPath);
+	    	File fileDirLessons = new File(getFilesDir(), lessonLocalPath);
         	fileDirLessons.mkdirs();
 	    	
 	    	mLessonManager = new LessonManager (this, lessonUrlPath, fileDirLessons);

@@ -60,7 +60,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
          mMediaUriTmp = Uri.fromFile(mMediaFileTmp);
          
      	Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-//        intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp);
+//      intent.putExtra( MediaStore.EXTRA_OUTPUT, mMediaUriTmp);
 
      	mActivity.startActivityForResult(intent, MediaConstants.CAMERA_RESULT);
          
@@ -68,9 +68,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
 	}
 	
 	public File capturePhoto (File fileExternDir)
-	{
-     	
-          
+	{     
         ContentValues values = new ContentValues();
       
         values.put(MediaStore.Images.Media.TITLE, MediaConstants.CAMERA_TMP_FILE);      
@@ -89,19 +87,6 @@ public class MediaHelper implements MediaScannerConnectionClient {
          return mMediaFileTmp;
 	}
 	
-	/*
-	public File captureAudio (File fileExternDir)
-	{
-        File fileAudio = new File(fileExternDir, new Date().getTime() + '-' + MediaConstants.AUDIO_TMP_FILE);
-
-		 //Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-        Intent intent = new Intent(mActivity,AudioRecorderActivity.class);
-		 intent.putExtra("path", fileAudio.getAbsolutePath());
-		 
-		 mActivity.startActivityForResult(intent, MediaConstants.AUDIO_RESULT);
-
-         return fileAudio;
-	}*/
 	
 	public void openGalleryChooser (String mimeType)
     {
@@ -118,6 +103,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
 		mActivity.startActivityForResult(intent, MediaConstants.FILE_RESULT);
 		
     }
+	
 	 public void playMedia (File mediaFile, String mimeType) {
 		 
 		 if (mimeType == null)
@@ -139,8 +125,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
 	 }
 	 
 	 public void shareMedia (File mediaFile, String mimeType)
-	 {
-			
+	 {		
 		 if (mimeType == null)
 			 mimeType = getMimeType(mediaFile.getAbsolutePath());
 	 	
@@ -148,20 +133,8 @@ public class MediaHelper implements MediaScannerConnectionClient {
     	intent.setType(mimeType);
     	intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(mediaFile));
     	mActivity.startActivityForResult(Intent.createChooser(intent, "Share Media"),0); 
-    	    
-		 
 	 }
  
-	 public Bitmap getBitmapThumb (File file) throws IOException
-	 {
-	 	 Uri contentURI = Uri.fromFile(file);        
-	      ContentResolver cr = mActivity.getContentResolver();
-	      InputStream in = cr.openInputStream(contentURI);
-	      BitmapFactory.Options options = new BitmapFactory.Options();
-	      options.inSampleSize=3;
-	      Bitmap thumb = BitmapFactory.decodeStream(in,null,options);
-	      return thumb;
-	 }
 	 
 	 public MediaDesc handleIntentLaunch(Intent intent)
 	 {
@@ -203,7 +176,7 @@ public class MediaHelper implements MediaScannerConnectionClient {
 		}
 		
 		return result;
- }
+	 }
 	 
 	 public MediaDesc pullMediaDescFromUri(Uri originalUri) {
 		 
@@ -235,188 +208,9 @@ public class MediaHelper implements MediaScannerConnectionClient {
 	 }
 	 
 	 
-	 public MediaHelper.MediaResult handleResult (int requestCode, int resultCode, Intent intent, File fileTmp)
-	 {
-		 MediaResult result = null;
-		 
-		 if (requestCode == MediaConstants.GALLERY_RESULT) 
-			{
-				if (intent != null)
-				{
-					Uri uriGalleryFile = intent.getData();
-					
-					try
-						{
-							if (uriGalleryFile != null)
-							{
-								
-								Cursor cursor = mActivity.managedQuery(uriGalleryFile, null, 
-		                                null, null, null); 
-								cursor.moveToNext();
-								
-								// Retrieve the path and the mime type
-								result = new MediaResult();
-								result.path = cursor.getString(cursor 
-								                .getColumnIndex(MediaStore.MediaColumns.DATA)); 
-								result.mimeType = cursor.getString(cursor 
-								                .getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-								
-								
-								
-							}
-							
-						}
-					catch (Exception e)
-					{
-						result = null;
-						Log.e(AppConstants.TAG, "error loading media: " + e.getMessage(), e);
-
-					}
-				}
-				else
-				{
-					result = null;
-	
-				}
-					
-			}
-			else if(requestCode == MediaConstants.CAMERA_RESULT) {
-				
-				//Uri uriCameraImage = intent.getData();			
-				//Log.d(MediaAppConstants.TAG, "RETURNED URI FROM CAMERA RESULT: " + uriCameraImage.toString());
-				//Uri uriCameraImage = Uri.fromFile(mFileTmp);
-				
-				result = new MediaResult();
-				result.mimeType = getMimeType(mMediaFileTmp.getAbsolutePath());
-				
-				if (result.mimeType  == null)
-				{
-					if(mMediaUriTmp.getPathSegments().contains("video")) {
-						result.mimeType  = MediaConstants.MIME_TYPE_MP4;
-					} else if(mMediaUriTmp.getPathSegments().contains("images")) {
-						result.mimeType  = MediaConstants.MIME_TYPE_JPEG;
-					}
-				}
-				
-				// TODO: IMPORTANTE!  Right here, we are forcing the media object to go through
-				// the media scanner.  THIS MUST BE UNDONE at the end of the editing process
-				// in order to maintain security/anonymity
-				
-				if((!mMediaFileTmp.exists()) && result.mimeType.equals(MediaConstants.MIME_TYPE_MP4)) {
-					// write input stream to file
-					FileOutputStream fos;
-					try {
-						
-						fos = new FileOutputStream(mMediaFileTmp);
-						InputStream media = mActivity.getContentResolver().openInputStream(mMediaUriTmp);
-						byte buf[] = new byte[1024];
-						int len;
-						while((len = media.read(buf)) > 0)
-							fos.write(buf, 0, len);
-						fos.close();
-						media.close();
-					} catch (FileNotFoundException e) {
-						Log.e(AppConstants.TAG, e.toString());
-					} catch (IOException e) {
-						Log.e(AppConstants.TAG, e.toString());
-					}
-					
-				}
-				
-				mScanner = new MediaScannerConnection(mActivity, this);
-				mScanner.connect();
-				
-			}
-			else if(requestCode == MediaConstants.AUDIO_RESULT) {
-
-				if (intent.getData() != null)
-				{
-					Uri uriMediaResult = intent.getData();
-					
-					if (uriMediaResult.getScheme().equalsIgnoreCase("content"))
-					{
-						Cursor cursor = mActivity.managedQuery(uriMediaResult, null, 
-	                            null, null, null); 
-						
-						if (cursor.moveToNext())
-						{
-						
-							// Retrieve the path and the mime type
-							result = new MediaResult();
-							result.path = cursor.getString(cursor 
-							                .getColumnIndex(MediaStore.MediaColumns.DATA)); 
-							result.mimeType = cursor.getString(cursor 
-							                .getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-						}
-					}
-					else
-					{
-						String uriPath = uriMediaResult.toString();
-						// Retrieve the path and the mime type
-						result = new MediaResult();
-						result.path = uriPath.substring(7); //get rid of file://
-						result.mimeType = intent.getStringExtra("mimeType");
-					
-					}
-					
-				}
-					
-			}
-			else if(requestCode == MediaConstants.FILE_RESULT) {
-				
-				if (intent.getData() != null)
-				{
-					Uri uriMediaResult = intent.getData();
-					
-					if (uriMediaResult.getScheme().equalsIgnoreCase("content"))
-					{
-						
-						Cursor cursor = mActivity.managedQuery(uriMediaResult, null, 
-	                            null, null, null);
-						
-						if (cursor.moveToNext())
-						{						
-							
-							// Retrieve the path and the mime type
-							result = new MediaResult();
-							result.path = new String(cursor.getBlob(cursor 
-							                .getColumnIndex(MediaStore.MediaColumns.DATA))); 
-							result.mimeType = cursor.getString(cursor 
-							                .getColumnIndex(MediaStore.MediaColumns.MIME_TYPE));
-							
-							if (intent.getDataString().indexOf("#")!=-1)
-								result.path = new File(uriMediaResult.getPath() + '#' + uriMediaResult.getFragment()).getAbsolutePath();
-							
-							if (result.mimeType == null)
-								result.mimeType = MediaConstants.MIME_TYPE_ANY;
-						}
-							
-					}
-					else if (uriMediaResult.getScheme().equalsIgnoreCase("file"))
-					{
-						result = new MediaResult();
-						result.path = new File(intent.getDataString()).getAbsolutePath();
-						
-						String fileExtension = MimeTypeMap.getFileExtensionFromUrl(intent.getDataString());
-						result.mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
-						
-						if (result.mimeType == null)
-							result.mimeType = MediaConstants.MIME_TYPE_ANY;
-					}
-
-					
-				}
-			}
-		 
-		 return result;
-	 }
-	 
 	 @Override
-	public void onMediaScannerConnected() {
-		
-		 
-		 mScanner.scanFile(mMediaFileTmp.getAbsolutePath(), null);
-		 
+	public void onMediaScannerConnected() {			 
+		 mScanner.scanFile(mMediaFileTmp.getAbsolutePath(), null);	 
 	}
 
 	@Override

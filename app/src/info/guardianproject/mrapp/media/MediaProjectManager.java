@@ -48,7 +48,7 @@ public class MediaProjectManager implements MediaManager {
     
 	private ArrayList<MediaClip> mMediaList = null;// FIXME refactor this to use it as a prop on project object
 	
-	private static File mFileExternDir; //where working files go
+	private static File sFileExternDir; //where working files go
 	//private File mMediaTmp;
 	private MediaDesc mOut;
 	
@@ -89,9 +89,7 @@ public class MediaProjectManager implements MediaManager {
             mScene = scene;
         }
         
-
         mSettings = PreferenceManager.getDefaultSharedPreferences(mContext.getApplicationContext());
-
     }
     
     public void initProject()
@@ -123,9 +121,7 @@ public class MediaProjectManager implements MediaManager {
                     Log.e(AppConstants.TAG,"error adding media from saved project", ioe);
                 }
         	}
-        }
-    
-        
+        }       
     }
     
 
@@ -176,26 +172,26 @@ public class MediaProjectManager implements MediaManager {
     private static synchronized void initExternalStorage (Context context)
     {
     	
-    	if (mFileExternDir == null)
-    	{
-    	
+    	if (sFileExternDir == null){
+   	
     		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
     		 
     		mUseInternal = settings.getBoolean("p_use_internal_storage",false);
         	
     		if (mUseInternal)
-    			mFileExternDir = context.getDir(AppConstants.FOLDER_PROJECTS_NAME,Context.MODE_WORLD_WRITEABLE|Context.MODE_WORLD_READABLE);
+    			sFileExternDir = new File(context.getFilesDir(), AppConstants.FOLDER_PROJECTS_NAME);
     		else
-    			mFileExternDir = new File(context.getExternalFilesDir(null),AppConstants.FOLDER_PROJECTS_NAME);
+    			sFileExternDir = new File(context.getExternalFilesDir(null),AppConstants.FOLDER_PROJECTS_NAME);
     		
-	    	mFileExternDir.mkdirs();
-	    	
+	    	sFileExternDir.mkdirs();	
     	}
     }
     
     public static File getRenderPath (Context context)
     {
-
+    	initExternalStorage(context);
+    	
+    	//FIXME mUseInternal will not be set during some calls
 		 File fileRenderTmpDir = null;
 		 
 		 if (mUseInternal)
@@ -211,7 +207,7 @@ public class MediaProjectManager implements MediaManager {
     	initExternalStorage (context);
     	
     	String folderName = project.getId()+"";
-    	File fileProject = new File(mFileExternDir,folderName);
+    	File fileProject = new File(sFileExternDir,folderName);
     	
     	fileProject.mkdirs();
     	
@@ -396,17 +392,16 @@ public class MediaProjectManager implements MediaManager {
 		    	fileExport.getParentFile().mkdirs();
 			    	
 			    //there can be only one renderer now - MP4Stream !!
-			    	MediaVideoExporter mEx = new MediaVideoExporter(mContext, mHandler, alMediaIn, fileRenderTmp, mOut);
+		    	MediaVideoExporter mEx = new MediaVideoExporter(mContext, mHandler, alMediaIn, fileRenderTmp, mOut);
 			    	
-			    	if (audioPath != null)
-			    	{
-			    		MediaDesc audioTrack = new MediaDesc();
-			    		audioTrack.path = audioPath;
-			    		mEx.addAudioTrack(audioTrack);
-			    	}
-			    	
-			    	mEx.export();
-			    
+		    	if (audioPath != null)
+		    	{
+		    		MediaDesc audioTrack = new MediaDesc();
+		    		audioTrack.path = audioPath;
+		    		mEx.addAudioTrack(audioTrack);
+		    	}
+		    	
+		    	mEx.export();		    
 		    }
 	   
          }    
@@ -438,10 +433,9 @@ public class MediaProjectManager implements MediaManager {
  	
  		    mOut = new MediaDesc ();
 // 		    mOut.mimeType = AppConstants.MimeTypes.OGG;
- //		    mOut.mimeType = AppConstants.MimeTypes.MP4_AUDIO;
+//		    mOut.mimeType = AppConstants.MimeTypes.MP4_AUDIO;
 		    mOut.mimeType = AppConstants.MimeTypes.THREEGPP_AUDIO;
  		    
- 		   // if (doCompress)
  		   applyExportSettingsAudio(mOut);
  		    
  		    mOut.path = fileExport.getCanonicalPath();
@@ -474,9 +468,7 @@ public class MediaProjectManager implements MediaManager {
   	    			File fileSrc = new File (mDesc.path);
   	    			
   	    			if (fileSrc.exists())
-  	    			{
-
-  	  		    	
+  	    			{ 	  		    	
   	    				fileExport.getParentFile().mkdirs();
   	  			    
   	    				fileExport.createNewFile();
@@ -486,11 +478,8 @@ public class MediaProjectManager implements MediaManager {
   	    				mOut.mimeType = AppConstants.MimeTypes.JPEG;
   	    				
   	    				break;
-  	    			}
-  	    			
-  	    		}
-
-  	 		    
+  	    			}	
+  	    		}		    
   	    	}
          }
          else if (mProject.getStoryType() == Project.STORY_TYPE_ESSAY)
@@ -566,6 +555,7 @@ public class MediaProjectManager implements MediaManager {
          
     }
     
+    
     void deleteRecursive(File fileOrDirectory, boolean onExit) throws IOException {
         if (fileOrDirectory.isDirectory())
             for (File child : fileOrDirectory.listFiles())
@@ -602,8 +592,7 @@ public class MediaProjectManager implements MediaManager {
     	mdout.format = "3gp";
     }
     
-    
-    
+     
     private void addMediaFile (int clipIndex, String path, String mimeType) throws IOException
     {
     	MediaDesc mdesc = new MediaDesc ();
@@ -615,164 +604,13 @@ public class MediaProjectManager implements MediaManager {
     	    mMediaList.add(null);
     	}
     	
-    	
+		MediaClip mClip = new MediaClip();
+		mClip.mMediaDescOriginal = mdesc;
+		
+		mMediaList.set(clipIndex, mClip);
+		
+		((SceneEditorActivity)mActivity).refreshClipPager(); // FIXME we should handle this by emitting a change event directly
 
-    	/*
-		if (mimeType.startsWith("audio") && mMediaList.get(clipIndex) != null 
-		        && (!mMediaList.get(mMediaList.size()-1).mMediaDescOriginal.mimeType.equals(mimeType)))
-		{
-			MediaClip mClipVideo =  mMediaList.get(clipIndex);
-			
-			MediaClip mClipAudio = new MediaClip();
-			mClipAudio.mMediaDescOriginal = mdesc;
-		
-				ShellCallback sc = null;
-	    		MediaMerger mm = new MediaMerger(mContext, (MediaManager)this, mHandler, mClipVideo, mClipAudio, mFileExternDir, sc);
-	    		// Convert to video
-	    		Thread thread = new Thread (mm);
-	    		thread.setPriority(Thread.NORM_PRIORITY);
-	    		thread.start();
-		
-			
-		}
-		else
-		{*/
-			//its the first clip and/or the previous item is the same type as this, or this is not an audio clip
-    		
-			MediaClip mClip = new MediaClip();
-			mClip.mMediaDescOriginal = mdesc;
-			
-			mMediaList.set(clipIndex, mClip);
-			
-			((SceneEditorActivity)mActivity).refreshClipPager(); // FIXME we should handle this by emitting a change event directly
-
-		//}
-		
-		mOut = null;
-    	
-//		if (mimeType.startsWith("audio") && mediaList.size() > 0 && (!mediaList.get(mediaList.size()-1).mMediaDescOriginal.mimeType.equals(mimeType)))
-//		{
-//			MediaClip mClipVideo =  mediaList.get(mediaList.size()-1);
-//			
-//			MediaClip mClipAudio = new MediaClip();
-//			mClipAudio.mMediaDescOriginal = mdesc;
-//		
-//			try {
-//				ShellCallback sc = null;
-//	    		MediaMerger mm = new MediaMerger(mContext, (MediaManager)this, mHandler, mClipVideo, mClipAudio, fileExternDir, sc);
-//	    		// Convert to video
-//	    		Thread thread = new Thread (mm);
-//	    		thread.setPriority(Thread.NORM_PRIORITY);
-//	    		thread.start();
-//			} catch (Exception e) {
-//				updateStatus("error merging video and audio");
-//				Log.e(AppConstants.TAG,"error merging video and audio",e);
-//			}
-//			
-//			
-//		}
-//		else
-//		{
-//			//its the first clip and/or the previous item is the same type as this, or this is not an audio clip
-//    		
-//			MediaClip mClip = new MediaClip();
-//			mClip.mMediaDescOriginal = mdesc;
-//			mediaList.add(clipIndex, mClip);
-//			
-//			int mediaId = mediaList.size()-1;
-//			
-//			MediaView mView = addMediaView(mClip, mediaId);
-//			
-//			prerenderMedia (mClip, mView); 
-//		}
-//		
-//		mOut = null;
-    	
+		mOut = null;	
     }
-    
-    
-    /*
-    public void prerenderMedia (MediaClip mClip, ShellCallback shellCallback)
-    {
-    //		File fileExportProjectDir = new File(mFileExportDir,mProject.getId()+"");
-
-    		MediaRenderer mRenderer = new MediaRenderer(mContext, (MediaManager)this, mHandler, mClip, mFileExternDir, shellCallback);
-    		// Convert to video
-    		Thread thread = new Thread (mRenderer);
-    		thread.setPriority(Thread.NORM_PRIORITY);
-    		thread.start();
-	
-    }
-    
-    	
-	
-	private void copyFile ()
-	{
-		// TODO prompt user for storage location?
-		 if (mOut != null && mOut.path != null) {
-			 File inFile = new File(mOut.path);
-			 FileChannel in;
-			 try {
-				 in = new FileInputStream(inFile).getChannel();
-				 FileChannel out = new FileOutputStream(new File("/sdcard/"
-						 + inFile.getName())).getChannel();
-				 in.transferTo(0, in.size(), out);
-			 } catch (FileNotFoundException e) {
-				 // TODO Auto-generated catch block
-				 e.printStackTrace();
-			 } catch (IOException e) {
-				 // TODO Auto-generated catch block
-				 e.printStackTrace();
-			 }
-		 }
-	}*/
-	
-//	private void showAddMediaDialog (final Activity activity)
-//	{
-//		
-//		final CharSequence[] items = {"Open Gallery","Open File","Choose Shot","Record Video", "Record Audio", "Take Photo"};
-//
-//		AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//		builder.setTitle("Choose medium");
-//		builder.setItems(items, new DialogInterface.OnClickListener() {
-//		    public void onClick(DialogInterface dialog, int item) {
-//		        
-//		    	switch (item) {
-//		    		case 0:
-//		    			mMediaHelper.openGalleryChooser("*/*");
-//		    			break;
-//		    		case 1:
-//		    			mMediaHelper.openFileChooser();
-//		    			break;
-//		    		case 2:
-//		    			showOverlayCamera(activity);
-//		    			break;
-//		    		case 3:
-//		    			mMediaTmp = mMediaHelper.captureVideo(fileExternDir);
-//
-//		    			break;
-//		    		case 4:
-//		    			mMediaTmp = mMediaHelper.captureAudio(fileExternDir);
-//
-//		    			break;
-//		    		case 5:
-//		    			mMediaTmp = mMediaHelper.capturePhoto(fileExternDir);
-//		    			break;
-//		    		default:
-//		    			//do nothing!
-//		    	}
-//		    	
-//		    	
-//		    }
-//		});
-//		
-//		AlertDialog alert = builder.create();
-//		alert.show();
-//	}
-
-
-	
-	
-	
-	
 }

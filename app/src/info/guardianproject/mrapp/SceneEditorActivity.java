@@ -289,21 +289,7 @@ public class SceneEditorActivity extends EditorBaseActivity implements ActionBar
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().hide(mLastTabFrag).commit();
     }
-
-    // protected void setupAddClipsFragment() {
-    // FragmentManager fm = getSupportFragmentManager();
-    //
-    // try {
-    // mFragmentTab0 = new SceneChooserFragment(R.layout.fragment_add_clips, fm,
-    // mTemplateJsonPath);
-    // } catch (IOException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // } catch (JSONException e) {
-    // // TODO Auto-generated catch block
-    // e.printStackTrace();
-    // }
-    // }
+    
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
