@@ -2,6 +2,7 @@ package info.guardianproject.mrapp;
 
 import info.guardianproject.mrapp.model.Media;
 import info.guardianproject.mrapp.model.Project;
+import info.guardianproject.mrapp.model.ProjectTable;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -215,7 +216,7 @@ public class ProjectsActivity extends BaseActivity {
     
     public void refreshProjects ()
     {
-    	 mListProjects = Project.getAllAsList(this);
+    	 mListProjects = (ArrayList<Project>) (new ProjectTable()).getAllAsList(this); // FIXME ugly
          aaProjects = new ProjectArrayAdapter(this, 
            	   R.layout.list_project_row, mListProjects);
          
